@@ -40,7 +40,7 @@ namespace Catalog.API.Repositories
         public async Task<IEnumerable<Product>> GetProductByCategory(string categoryName)
         {
             FilterDefinition<Product> filter =
-                Builders<Product>.Filter.ElemMatch(p => p.Categotry, categoryName);
+                Builders<Product>.Filter.ElemMatch(p => p.Category, categoryName);
             
                 return await _context
                             .Products
@@ -78,5 +78,11 @@ namespace Catalog.API.Repositories
             return deleteResult.IsAcknowledged 
                 && deleteResult.DeletedCount > 0;
         }
+
+        public async Task CreateProduct(Product product)
+        {
+            await _context.Products.InsertOneAsync(product);
+        }
+        
     }
 }
