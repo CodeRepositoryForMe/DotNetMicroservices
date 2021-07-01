@@ -27,35 +27,32 @@ namespace Catalog.API.Repositories
 
         public Task<Product> GetProduct(string id)
         {
-            FilterDefinition<Product> filter =
-                Builders<Product>.Filter.ElemMatch(p => p.Id, id);
-
             return _context
                         .Products
-                        .Find(filter)
+                        .Find(p => p.Id == id)
                         .FirstOrDefaultAsync();
 
         }
 
         public async Task<IEnumerable<Product>> GetProductByCategory(string categoryName)
         {
-            FilterDefinition<Product> filter =
-                Builders<Product>.Filter.ElemMatch(p => p.Category, categoryName);
+            //FilterDefinition<Product> filter =
+            //    Builders<Product>.Filter.ElemMatch(p => p.Category, categoryName);
             
                 return await _context
                             .Products
-                            .Find(filter)
+                            .Find(p => p.Category == categoryName)
                             .ToListAsync();
         }
 
         public async Task<IEnumerable<Product>> GetProductByName(string name)
         {
-            FilterDefinition < Product > filter =
-                Builders<Product>.Filter.ElemMatch(p => p.Name, name);
+            //FilterDefinition < Product > filter =
+            //    Builders<Product>.Filter.ElemMatch(p => p.Name, name);
             
             return await _context
                             .Products
-                            .Find(filter)
+                            .Find(p => p.Name == name)
                             .ToListAsync();
         }
 
@@ -73,7 +70,7 @@ namespace Catalog.API.Repositories
         {
             var deleteResult = await _context
                                     .Products
-                                    .DeleteOneAsync(filter: p => p.Id == id);
+                                    .DeleteOneAsync(p => p.Id == id);
 
             return deleteResult.IsAcknowledged 
                 && deleteResult.DeletedCount > 0;
